@@ -657,7 +657,11 @@
 
               </div>
             </form>
+            <!-- Zone de message -->
+<div id="form-status" style="margin-top:10px; font-family:Arial; font-size:14px;"></div>
           </div><!-- End Contact Form -->
+
+<!-- JS -->
 
         </div>
 
@@ -701,17 +705,33 @@
     </script>
 
 
- <!-- JS pour l'envoi -->
-  <script>
-    document.getElementById('contact-form').addEventListener('submit', function(e){
-      e.preventDefault();
-      emailjs.sendForm('service_4juexye', 'template_tec11ki', this)
-      .then(()=> alert("Votre message a été envoyé"),(err) => alert("Erreur : " + err));
-    });
+<script>
+  const form = document.getElementById('contact-form');
+  const statusDiv = document.getElementById('form-status');
 
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
 
-  </script>
+    // Afficher le loading
+    statusDiv.innerHTML = "⏳ Envoi en cours...";
+    statusDiv.style.color = "blue";
 
+    emailjs.sendForm('service_4juexye', 'template_tec11ki', this)
+      .then(() => {
+        // Succès
+        statusDiv.innerHTML = "✅ Message envoyé avec succès !";
+        statusDiv.style.color = "green";
+        form.reset();
+      })
+      .catch((err) => {
+        // Erreur
+        statusDiv.innerHTML = "❌ Une erreur est survenue. Veuillez réessayer.";
+        statusDiv.style.color = "red";
+        console.error("Erreur EmailJS :", err);
+      });
+  });
+</script>
+  
 
   <!-- Preloader -->
   <div id="preloader"></div>
